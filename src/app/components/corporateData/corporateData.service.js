@@ -44,6 +44,22 @@ export class CorporateDataService {
         return self.localStorageService.get(key);
       },1000);
     }
+  }
+  getSellsCsv(key){
+    let self=this;
+    if(key=='MOCK_SELLS.csv'){
+      return this.$http.get('/data/MOCK_SELLS.csv')
+        .then((response) => {
+          return Papa.parse(response.data,{header: true,skipEmptyLines: true});
+        })
+        .catch((error) => {
+          this.$log.error('XHR Failed for get issues data.\n' + angular.toJson(error.data, true));
+        });
+    }else{
+      return this.$timeout(function(){
+        return self.localStorageService.get(key);
+      },1000);
+    }
 
   }
 

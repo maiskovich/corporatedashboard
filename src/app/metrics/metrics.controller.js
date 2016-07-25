@@ -1,19 +1,31 @@
 export class MetricsController {
-  constructor($scope,corporateData) {
+  constructor($scope,corporateData,metricsProcessing) {
     'ngInject';
-    $scope.labels = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
-    $scope.series = ['Series A', 'Series B'];
-
-    $scope.data = [
-      [65, 59, 80, 81, 56, 55, 40],
-      [28, 48, 40, 19, 86, 27, 90]
-    ];
     corporateData.getIssuesCsv('MOCK_ISSUES.csv').then((data)=> {
-      console.log(data);
-      //filter the issues that are open
-      let openIssues=data.data.filter((issue) => issue.status == 'open');
-      console.log(openIssues);
-      this.numberIssues=openIssues.length;
+      let processedDataIssues=metricsProcessing.processMetricsIssues(data.data);
+      this.numberIssues=processedDataIssues.numberOpenIssues;
+      $scope.labelsIssues=[];
+      $scope.seriesIssues = ['Issues'];
+      $scope.dataIssues=[];
+      angular.forEach(processedDataIssues.reportedIssues, function(period, key) {
+        $scope.labelsIssues.unshift(period.period);
+        $scope.dataIssues.unshift(period.numberIssues);
+      });
+      $scope.dataIssues=[$scope.dataIssues];
+     console.log($scope.dataIssues);
+    });
+    corporateData.getSellsCsv('MOCK_SELLS.csv').then((data)=>{
+      let processedDataSells=metricsProcessing.processMetricsSells(data.data);
+      console.log(processedDataSells);
+      $scope.labelsSells=[];
+      $scope.seriesSells = ['Number of Sells','Amount of sales'];
+      $scope.dataSells=[];
+      angular.forEach(processedDataSells, function(period, key) {
+        $scope.labelsSells.unshift(period.period);
+        $scope.dataSells.unshift(period.numberSells);
+      });
+      $scope.dataSells=[$scope.dataSells];
+      console.log($scope.dataSells);
     });
   }
   add(){
