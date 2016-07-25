@@ -1,9 +1,30 @@
 export class SpreadsheetController {
   constructor($scope,NgTableParams,corporateData) {
     'ngInject';
-    corporateData.getIssuesCsv('MOCK_ISSUES.csv').then((data)=> {
-     let self=this;
-      self.tableParams = new NgTableParams();
+    this.corporateData=corporateData;
+    this.NgTableParams=NgTableParams;
+    this.$scope=$scope;
+  }
+  addIssues(){
+    let self=this;
+    let file = document.getElementById('fileIssues').files[0],
+      r = new FileReader();
+    r.onloadend = function(e){
+      let data = e.target.result;
+      try {
+        self.corporateData.uploadIssuesCsv(file.name, data);
+      }catch(err) {
+        self.uploadError=err;
+        //Update the scope to show the error message
+        self.$scope.$digest();
+      }
+    };
+    r.readAsBinaryString(file);
+  };
+  selectedIssuesDatasetChanged(){
+    this.corporateData.getIssuesCsv(this.dataIssuesSelected).then((data)=> {
+      let self=this;
+      self.tableParams = new this.NgTableParams();
       self.tableParams.settings({
         dataset: data.data
       });

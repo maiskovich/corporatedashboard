@@ -1,4 +1,20 @@
 <nav-bar activetab="'spreadsheet'"></nav-bar>
+<form class="form-inline formDataset" name="issuesForm" ng-submit="issuesForm.$valid && spread.addIssues()">
+  <div class="form-group ">
+    <label for="selectIssuesDataset">Issues Data:</label>
+    <select id="selectIssuesDataset" class="form-control" ng-model="spread.dataIssuesSelected" ng-change="spread.selectedIssuesDatasetChanged()">
+      <option value="MOCK_ISSUES.csv">Mock Data</option>
+      <option ng-repeat="dataset in spread.issuesDataSets" value="{{dataset}}">{{dataset.split("issues.").pop()}}</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="fileIssues">New Dataset:</label>
+    <input type="file" name="fileIssues" class="form-control" id="fileIssues" required>
+  </div>
+  <button type="submit" class="btn btn-default">Upload issues csv</button>
+  <br>
+  <div class="formError">{{spread.uploadError}}</div>
+</form>
 <table ng-table-dynamic="spread.tableParams with spread.cols" class="table table-condensed table-bordered table-striped">
   <tr ng-repeat="row in $data">
     <td ng-repeat="col in $columns">{{row[col.field]}}</td>

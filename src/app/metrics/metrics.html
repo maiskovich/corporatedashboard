@@ -1,4 +1,38 @@
 <nav-bar activetab="'metrics'"></nav-bar>
+<form class="form-inline formDataset" name="issuesForm" ng-submit="issuesForm.$valid && metrics.addIssues()">
+  <div class="form-group ">
+    <label for="selectIssuesDataset">Issues Data:</label>
+    <select id="selectIssuesDataset" class="form-control" ng-model="metrics.dataIssuesSelected" ng-change="metrics.selectedIssuesDatasetChanged()">
+      <option value="MOCK_ISSUES.csv">Mock Data</option>
+      <option ng-repeat="dataset in metrics.issuesDataSets" value="{{dataset}}">{{dataset.split("issues.").pop()}}</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="fileIssues">New Dataset:</label>
+    <input type="file" name="fileIssues" class="form-control" id="fileIssues" required>
+  </div>
+  <button type="submit" class="btn btn-default">Upload issues csv</button>
+  <br>
+  <div class="formError">{{metrics.uploadErrorIssues}}</div>
+</form>
+  <br>
+<form class="form-inline formDataset" name="sellsForm" ng-submit="sellsForm.$valid && metrics.addSells()">
+  <div class="form-group ">
+    <label for="selectSellsDataset">Sells Data:</label>
+    <select id="selectSellsDataset" class="form-control" ng-model="metrics.dataSellsSelected" ng-change="metrics.selectedSellsDatasetChanged()">
+      <option value="MOCK_SELLS.csv">Mock Data</option>
+      <option ng-repeat="dataset in metrics.sellsDataSets" value="{{dataset}}">{{dataset.split("sells.").pop()}}</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="fileSells">New Dataset:</label>
+    <input type="file" name="fileSells" class="form-control" id="fileSells" required>
+  </div>
+  <button type="submit" class="btn btn-default">Upload sells csv</button>
+  <br>
+  <div class="formError">{{metrics.uploadErrorSells}}</div>
+</form>
+<br>
 <div class="container">
   <div class="btn btn-info center-block" style="width:30%;">Open issues: {{metrics.numberIssues}}</div>
   <h3>Issues:</h3>

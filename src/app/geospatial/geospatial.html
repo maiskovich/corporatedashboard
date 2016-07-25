@@ -1,4 +1,21 @@
 <nav-bar activetab="'map'"></nav-bar>
+<form class="form-inline formDataset" name="dataForm" ng-submit="dataForm.$valid && geo.add()">
+  <div class="form-group ">
+    <label for="selectDataset">Data:</label>
+    <select id="selectDataset" class="form-control" ng-model="geo.dataSelected" ng-change="geo.selectedDatasetChanged()">
+      <option value="MOCK_EMPLOYEES.csv">Mock Data</option>
+      <option ng-repeat="dataset in geo.employeesDataSets" value="{{dataset}}">{{dataset.split("employees.").pop()}}</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="file">New Dataset:</label>
+    <input type="file" name="file" class="form-control" id="file" required>
+  </div>
+  <button type="submit" class="btn btn-default">Upload employees csv</button>
+  <br>
+  <div class="formError">{{geo.uploadError}}</div>
+</form>
+<br>
 <div class="container">
   <leaflet center="center" height="80vh" width="100%"></leaflet>
 </div>

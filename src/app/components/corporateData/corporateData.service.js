@@ -6,10 +6,30 @@ export class CorporateDataService {
     this.localStorageService=localStorageService;
     this.$timeout=$timeout;
   }
-  //Upload data from csv file, store in local storage, and return it as json
+  //Upload employees csv file and store in local storage
   uploadEmployeesCsv(fileName,data) {
     let self=this;
-      self.localStorageService.set(fileName, data);
+    let parsedData=(Papa.parse(data));
+    parsedData=parsedData.data[0];
+    //Check if there is a file with the same name
+    if(this.localStorageService.keys().indexOf('employees.'+fileName)!=-1){
+      throw "There is already a file with the same name.";
+    }else
+    //If all of the fields exists
+    if(parsedData.indexOf('lat')!=-1 && parsedData.indexOf('lng')!=-1){
+      self.localStorageService.set('employees.'+fileName, data);
+    }
+    //If some of the fields doesnt exist, throw error, giving feedback of which fields are required in the file
+    else{
+      let missingFields='';
+      if(parsedData.indexOf('lat')==-1){
+        missingFields+='lat ';
+      }
+      if(parsedData.indexOf('lng')==-1){
+        missingFields+='lng ';
+      }
+      throw "Missing fields "+missingFields+"in CSV file.";
+    }
 
   };
   getEmployeesCsv(key){
@@ -27,8 +47,59 @@ export class CorporateDataService {
         return self.localStorageService.get(key);
       },500);
     }
-
   }
+  getEmployeesKeys(){
+    let keys=this.localStorageService.keys();
+    keys = keys.filter(function (item) {
+      return item.indexOf("employees.") == 0;
+    });
+    return keys;
+  }
+  //Upload issues csv file and store in local storage
+  uploadIssuesCsv(fileName,data) {
+    let self=this;
+    let parsedData=(Papa.parse(data));
+    parsedData=parsedData.data[0];
+    //Check if there is a file with the same name
+    if(this.localStorageService.keys().indexOf('issues.'+fileName)!=-1){
+      throw "There is already a file with the same name.";
+    }else
+    //If all of the fields exists
+    if(parsedData.indexOf('submissiondate')!=-1 && parsedData.indexOf('customername')!=-1
+      && parsedData.indexOf('customeremail')!=-1
+      && parsedData.indexOf('description')!=-1
+      && parsedData.indexOf('status')!=-1
+      && parsedData.indexOf('closeddate')!=-1
+      && parsedData.indexOf('employeename')!=-1){
+      self.localStorageService.set('issues.'+fileName, data);
+    }
+    //If some of the fields doesnt exist, throw error, giving feedback of which fields are required in the file
+    else{
+      let missingFields='';
+      if(parsedData.indexOf('submissiondate')==-1){
+        missingFields+='submissiondate ';
+      }
+      if(parsedData.indexOf('customername')==-1){
+        missingFields+='customername ';
+      }
+      if(parsedData.indexOf('customeremail')==-1){
+        missingFields+='customeremail ';
+      }
+      if(parsedData.indexOf('description')==-1){
+        missingFields+='description ';
+      }
+      if(parsedData.indexOf('status')==-1){
+        missingFields+='status ';
+      }
+      if(parsedData.indexOf('closeddate')==-1){
+        missingFields+='closeddate ';
+      }
+      if(parsedData.indexOf('employeename')==-1){
+        missingFields+='employeename ';
+      }
+      throw "Missing fields "+missingFields+"in CSV file.";
+    }
+  };
   getIssuesCsv(key){
     let self=this;
     if(key=='MOCK_ISSUES.csv'){
@@ -41,10 +112,44 @@ export class CorporateDataService {
         });
     }else{
       return this.$timeout(function(){
-        return self.localStorageService.get(key);
+        return Papa.parse(self.localStorageService.get(key),{header: true,skipEmptyLines: true});
       },500);
     }
   }
+  getIssuesKeys(){
+    let keys=this.localStorageService.keys();
+    keys = keys.filter(function (item) {
+      return item.indexOf("issues.") == 0;
+    });
+    return keys;
+  }
+  //Upload sells csv file and store in local storage
+  uploadSellsCsv(fileName,data) {
+    let self=this;
+    let parsedData=(Papa.parse(data));
+    parsedData=parsedData.data[0];
+    //Check if there is a file with the same name
+    if(this.localStorageService.keys().indexOf('sells.'+fileName)!=-1){
+      throw "There is already a file with the same name.";
+    }else
+    //If all of the fields exists
+    if(parsedData.indexOf('selldate')!=-1 && parsedData.indexOf('amount')!=-1) {
+      self.localStorageService.set('sells.'+fileName, data);
+    }
+    //If some of the fields doesnt exist, throw error, giving feedback of which fields are required in the file
+    else{
+      let missingFields='';
+      if(parsedData.indexOf('selldate')==-1){
+        missingFields+='selldate ';
+      }
+      if(parsedData.indexOf('sells')==-1){
+        missingFields+='sells ';
+      }
+      throw "Missing fields "+missingFields+"in CSV file.";
+    }
+
+
+  };
   getSellsCsv(key){
     let self=this;
     if(key=='MOCK_SELLS.csv'){
@@ -57,10 +162,16 @@ export class CorporateDataService {
         });
     }else{
       return this.$timeout(function(){
-        return self.localStorageService.get(key);
+        return Papa.parse(self.localStorageService.get(key),{header: true,skipEmptyLines: true});
       },500);
     }
-
+  }
+  getSellsKeys(){
+    let keys=this.localStorageService.keys();
+    keys = keys.filter(function (item) {
+      return item.indexOf("sells.") == 0;
+    });
+    return keys;
   }
 
 }

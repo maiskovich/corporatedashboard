@@ -1,41 +1,76 @@
 export class MetricsController {
   constructor($scope,corporateData,metricsProcessing) {
     'ngInject';
-    corporateData.getIssuesCsv('MOCK_ISSUES.csv').then((data)=> {
-      metricsProcessing.processMetricsIssues(data.data).then((processedDataIssues)=>{
-      this.numberIssues=processedDataIssues.numberOpenIssues;
-      $scope.labelsIssues=[];
-      $scope.seriesIssues = ['Issues'];
-      $scope.dataIssues=[];
-      angular.forEach(processedDataIssues.reportedIssues, function(period, key) {
-        $scope.labelsIssues.unshift(period.period);
-        $scope.dataIssues.unshift(period.numberIssues);
-      });
-      $scope.dataIssues=[$scope.dataIssues];
-      });
-    });
-    corporateData.getSellsCsv('MOCK_SELLS.csv').then((data)=>{
-      metricsProcessing.processMetricsSells(data.data).then((processedDataSells)=>{
-      $scope.labelsSells=[];
-      $scope.seriesSells = ['Number of Sells','Amount of sales'];
-      $scope.dataSells=[];
-      angular.forEach(processedDataSells, function(period, key) {
-        $scope.labelsSells.unshift(period.period);
-        $scope.dataSells.unshift(period.numberSells);
-      });
-      $scope.dataSells=[$scope.dataSells];
-      });
-    });
+    this.corporateData=corporateData;
+    this.metricsProcessing=metricsProcessing;
+    this.$scope=$scope;
+    this.issuesDataSets=corporateData.getIssuesKeys();
+    this.sellsDataSets=corporateData.getSellsKeys();
   }
-  add(){
+  addIssues(){
     let self=this;
-    let file = document.getElementById('file').files[0],
+    let file = document.getElementById('fileIssues').files[0],
       r = new FileReader();
     r.onloadend = function(e){
       let data = e.target.result;
-      self.corporateData.uploadEmployeesCsv(file.name,data);
-    }
+      try {
+        self.corporateData.uploadIssuesCsv(file.name, data);
+      }catch(err) {
+        self.uploadErrorIssues=err;
+        //Update the scope to show the error message
+        self.$scope.$digest();
+      }
+    };
     r.readAsBinaryString(file);
+  }
+  selectedIssuesDatasetChanged(){
+    let self=this;
+    this.corporateData.getIssuesCsv(this.dataIssuesSelected).then((data)=> {
+      this.metricsProcessing.processMetricsIssues(data.data).then((processedDataIssues)=>{
+        this.numberIssues=processedDataIssues.numberOpenIssues;
+        this.$scope.labelsIssues=[];
+        this.$scope.seriesIssues = ['Issues'];
+        this.$scope.dataIssues=[];
+        angular.forEach(processedDataIssues.reportedIssues, function(period, key) {
+          self.$scope.labelsIssues.unshift(period.period);
+          self.$scope.dataIssues.unshift(period.numberIssues);
+        });
+        this.$scope.dataIssues=[this.$scope.dataIssues];
+      });
+    });
+    this.issuesDataSets=this.corporateData.getIssuesKeys();
+  }
+  addSells(){
+    let self=this;
+    let file = document.getElementById('fileSells').files[0],
+      r = new FileReader();
+    r.onloadend = function(e){
+      let data = e.target.result;
+      try {
+        self.corporateData.uploadIssuesCsv(file.name, data);
+      }catch(err) {
+        self.uploadErrorSells=err;
+        //Update the scope to show the error message
+        self.$scope.$digest();
+      }
+    };
+    r.readAsBinaryString(file);
+  }
+  selectedSellsDatasetChanged(){
+    let self=this;
+    this.corporateData.getSellsCsv(this.dataSellsSelected).then((data)=>{
+     this.$scope.labelsSells=[];
+      this.$scope.seriesSells = ['Number of Sells','Amount of sales'];
+      this.$scope.dataSells=[];
+      this.metricsProcessing.processMetricsSells(data.data).then((processedDataSells)=>{
+        angular.forEach(processedDataSells, function(period, key) {
+          self.$scope.labelsSells.unshift(period.period);
+          self.$scope.dataSells.unshift(period.numberSells);
+        });
+        this.$scope.dataSells=[this.$scope.dataSells];
+      });
+    });
+    this.sellsDataSets=this.corporateData.getSellsKeys();
   }
 }
 
