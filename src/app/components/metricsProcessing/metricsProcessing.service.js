@@ -1,10 +1,12 @@
 export class MetricsProcessingService {
-  constructor ($log,$q) {
+  constructor ($log,$q,$timeout) {
     'ngInject';
     this.$log = $log;
     this.$q=$q;
+    this.$timeout=$timeout;
   }
   processMetricsIssues(data){
+    return this.$timeout(function(){
     //filter the issues that are open
     let openIssues=data.filter((issue) => issue.status == 'open');
     let timesPeriods={};
@@ -16,9 +18,10 @@ export class MetricsProcessingService {
       timesPeriods[i].numberIssues=data.filter((issue) => (new Date(issue.submissiondate)).getMonth() == today.getMonth()).length;
     }
     return {numberOpenIssues:openIssues.length,reportedIssues:timesPeriods};
-
+    },500);
   }
   processMetricsSells(data){
+    return this.$timeout(function(){
     let timesPeriods={};
     for (let i=0;i<6;i++){
       let today = new Date();
@@ -34,7 +37,7 @@ export class MetricsProcessingService {
       timesPeriods[i].totalSales=sum.toFixed(2);
     }
     return timesPeriods;
-
+    },500);
   }
 
 

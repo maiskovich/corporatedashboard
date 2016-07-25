@@ -2,7 +2,7 @@ export class MetricsController {
   constructor($scope,corporateData,metricsProcessing) {
     'ngInject';
     corporateData.getIssuesCsv('MOCK_ISSUES.csv').then((data)=> {
-      let processedDataIssues=metricsProcessing.processMetricsIssues(data.data);
+      metricsProcessing.processMetricsIssues(data.data).then((processedDataIssues)=>{
       this.numberIssues=processedDataIssues.numberOpenIssues;
       $scope.labelsIssues=[];
       $scope.seriesIssues = ['Issues'];
@@ -12,11 +12,10 @@ export class MetricsController {
         $scope.dataIssues.unshift(period.numberIssues);
       });
       $scope.dataIssues=[$scope.dataIssues];
-     console.log($scope.dataIssues);
+      });
     });
     corporateData.getSellsCsv('MOCK_SELLS.csv').then((data)=>{
-      let processedDataSells=metricsProcessing.processMetricsSells(data.data);
-      console.log(processedDataSells);
+      metricsProcessing.processMetricsSells(data.data).then((processedDataSells)=>{
       $scope.labelsSells=[];
       $scope.seriesSells = ['Number of Sells','Amount of sales'];
       $scope.dataSells=[];
@@ -25,14 +24,13 @@ export class MetricsController {
         $scope.dataSells.unshift(period.numberSells);
       });
       $scope.dataSells=[$scope.dataSells];
-      console.log($scope.dataSells);
+      });
     });
   }
   add(){
     let self=this;
     let file = document.getElementById('file').files[0],
       r = new FileReader();
-    console.log(file.name);
     r.onloadend = function(e){
       let data = e.target.result;
       self.corporateData.uploadEmployeesCsv(file.name,data);

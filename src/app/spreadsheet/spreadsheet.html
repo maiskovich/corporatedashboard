@@ -1,0 +1,6 @@
+<nav-bar activetab="'spreadsheet'"></nav-bar>
+<table ng-table-dynamic="spread.tableParams with spread.cols" class="table table-condensed table-bordered table-striped">
+  <tr ng-repeat="row in $data">
+    <td ng-repeat="col in $columns">{{row[col.field]}}</td>
+  </tr>
+</table>

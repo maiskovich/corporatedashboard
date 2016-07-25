@@ -25,7 +25,7 @@ export class CorporateDataService {
     }else{
       return this.$timeout(function(){
         return self.localStorageService.get(key);
-      },1000);
+      },500);
     }
 
   }
@@ -42,7 +42,7 @@ export class CorporateDataService {
     }else{
       return this.$timeout(function(){
         return self.localStorageService.get(key);
-      },1000);
+      },500);
     }
   }
   getSellsCsv(key){
@@ -58,7 +58,7 @@ export class CorporateDataService {
     }else{
       return this.$timeout(function(){
         return self.localStorageService.get(key);
-      },1000);
+      },500);
     }
 
   }

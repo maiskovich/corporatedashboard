@@ -13,7 +13,6 @@ export class GeospatialController {
           layer.bindPopup(popup);
         }});
     corporateData.getEmployeesCsv('MOCK_EMPLOYEES.csv').then((data)=> {
-      console.log(data);
       var markers = L.markerClusterGroup();
       geoLayer.addData(data);
       markers.addLayer(geoLayer);
