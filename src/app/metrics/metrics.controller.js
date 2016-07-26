@@ -8,6 +8,8 @@ export class MetricsController {
     this.sellsDataSets=corporateData.getSellsKeys();
   }
   addIssues(){
+    this.uploadErrorIssues=false;
+    this.uploadSuccessIssues=false;
     let self=this;
     let file = document.getElementById('fileIssues').files[0],
       r = new FileReader();
@@ -15,7 +17,12 @@ export class MetricsController {
       let data = e.target.result;
       try {
         self.corporateData.uploadIssuesCsv(file.name, data);
+        self.uploadSuccessIssues='The file '+file.name+' was uploaded successfully.';
+        //Update the scope to show the succes message
+        self.$scope.$digest();
+        self.issuesDataSets=self.corporateData.getIssuesKeys();
       }catch(err) {
+        alert(err);
         self.uploadErrorIssues=err;
         //Update the scope to show the error message
         self.$scope.$digest();
@@ -31,7 +38,7 @@ export class MetricsController {
         this.$scope.labelsIssues=[];
         this.$scope.seriesIssues = ['Issues'];
         this.$scope.dataIssues=[];
-        angular.forEach(processedDataIssues.reportedIssues, function(period, key) {
+        angular.forEach(processedDataIssues.reportedIssues, function(period) {
           self.$scope.labelsIssues.unshift(period.period);
           self.$scope.dataIssues.unshift(period.numberIssues);
         });
@@ -41,14 +48,21 @@ export class MetricsController {
     this.issuesDataSets=this.corporateData.getIssuesKeys();
   }
   addSells(){
+    this.uploadErrorSells=false;
+    this.uploadSuccessSells=false;
     let self=this;
     let file = document.getElementById('fileSells').files[0],
       r = new FileReader();
     r.onloadend = function(e){
       let data = e.target.result;
       try {
-        self.corporateData.uploadIssuesCsv(file.name, data);
+        self.corporateData.uploadSellsCsv(file.name, data);
+        self.uploadSuccessSells='The file '+file.name+' was uploaded successfully.';
+        //Update the scope to show the succes message
+        self.$scope.$digest();
+        self.sellsDataSets=self.corporateData.getSellsKeys();
       }catch(err) {
+        alert(err);
         self.uploadErrorSells=err;
         //Update the scope to show the error message
         self.$scope.$digest();
@@ -63,7 +77,7 @@ export class MetricsController {
       this.$scope.seriesSells = ['Number of Sells','Amount of sales'];
       this.$scope.dataSells=[];
       this.metricsProcessing.processMetricsSells(data.data).then((processedDataSells)=>{
-        angular.forEach(processedDataSells, function(period, key) {
+        angular.forEach(processedDataSells, function(period) {
           self.$scope.labelsSells.unshift(period.period);
           self.$scope.dataSells.unshift(period.numberSells);
         });

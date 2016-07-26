@@ -12,8 +12,10 @@
     <input type="file" name="file" class="form-control" id="file" required>
   </div>
   <button type="submit" class="btn btn-default">Upload employees csv</button>
+  <a href="/data/MOCK_EMPLOYEES.csv" download="EMPLOYEES.CSV" class="btn btn-info">Download mock data</a>
   <br>
-  <div class="formError">{{geo.uploadError}}</div>
+  <div class="formError" ng-if="geo.uploadError">{{geo.uploadError}}</div>
+  <div class="formSuccess" ng-if="geo.uploadSuccess">{{geo.uploadSuccess}}</div>
 </form>
 <br>
 <div class="container">

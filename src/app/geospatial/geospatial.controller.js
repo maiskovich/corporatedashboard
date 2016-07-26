@@ -5,8 +5,11 @@ export class GeospatialController {
     this.employeesDataSets=corporateData.getEmployeesKeys();
     this.leafletData=leafletData;
     this.markers = L.markerClusterGroup();
+    this.$scope=$scope;
   }
   add(){
+    this.uploadError=false;
+    this.uploadSuccess=false;
     let self=this;
     let file = document.getElementById('file').files[0],
       r = new FileReader();
@@ -14,6 +17,10 @@ export class GeospatialController {
       let data = e.target.result;
       try{
         self.corporateData.uploadEmployeesCsv(file.name,data);
+        self.uploadSuccess='The file '+file.name+' was uploaded successfully.';
+        //Update the scope to show the succes message
+        self.$scope.$digest();
+        self.employeesDataSets=self.corporateData.getEmployeesKeys();
       }catch(err) {
         self.uploadError=err;
         //Update the scope to show the error message
@@ -21,10 +28,10 @@ export class GeospatialController {
       }
     };
     r.readAsBinaryString(file);
-    this.employeesDataSets=self.corporateData.getEmployeesKeys();
   }
   selectedDatasetChanged(){
     this.markers.clearLayers();
+    L.Icon.Default.imagePath = '/assets/images';
     let geoLayer = L.geoCsv(null, {firstLineTitles: true,
       fieldSeparator: ',',
       lineSeparator: '\n',

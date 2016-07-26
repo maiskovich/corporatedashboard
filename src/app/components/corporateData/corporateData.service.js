@@ -6,6 +6,15 @@ export class CorporateDataService {
     this.localStorageService=localStorageService;
     this.$timeout=$timeout;
   }
+  //List the keys of all the data in local storage
+  getDatasetsKeys(){
+    let keys=this.localStorageService.keys();
+
+    return keys;
+  }
+  removeDataset(dataset){
+    return this.localStorageService.remove(dataset);
+  }
   //Upload employees csv file and store in local storage
   uploadEmployeesCsv(fileName,data) {
     let self=this;
@@ -30,8 +39,7 @@ export class CorporateDataService {
       }
       throw "Missing fields "+missingFields+"in CSV file.";
     }
-
-  };
+  }
   getEmployeesCsv(key){
     let self=this;
     if(key=='MOCK_EMPLOYEES.csv'){
@@ -99,7 +107,7 @@ export class CorporateDataService {
       }
       throw "Missing fields "+missingFields+"in CSV file.";
     }
-  };
+  }
   getIssuesCsv(key){
     let self=this;
     if(key=='MOCK_ISSUES.csv'){
@@ -147,9 +155,7 @@ export class CorporateDataService {
       }
       throw "Missing fields "+missingFields+"in CSV file.";
     }
-
-
-  };
+  }
   getSellsCsv(key){
     let self=this;
     if(key=='MOCK_SELLS.csv'){

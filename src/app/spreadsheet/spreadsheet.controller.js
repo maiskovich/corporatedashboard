@@ -4,8 +4,11 @@ export class SpreadsheetController {
     this.corporateData=corporateData;
     this.NgTableParams=NgTableParams;
     this.$scope=$scope;
+    this.issuesDataSets=this.corporateData.getIssuesKeys();
   }
   addIssues(){
+    this.uploadError=false;
+    this.uploadSuccess=false;
     let self=this;
     let file = document.getElementById('fileIssues').files[0],
       r = new FileReader();
@@ -13,6 +16,10 @@ export class SpreadsheetController {
       let data = e.target.result;
       try {
         self.corporateData.uploadIssuesCsv(file.name, data);
+        self.uploadSuccess='The file '+file.name+' was uploaded successfully.';
+        //Update the scope to show the succes message
+        self.$scope.$digest();
+        self.issuesDataSets=self.corporateData.getIssuesKeys();
       }catch(err) {
         self.uploadError=err;
         //Update the scope to show the error message
@@ -20,7 +27,7 @@ export class SpreadsheetController {
       }
     };
     r.readAsBinaryString(file);
-  };
+  }
   selectedIssuesDatasetChanged(){
     this.corporateData.getIssuesCsv(this.dataIssuesSelected).then((data)=> {
       let self=this;

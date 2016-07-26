@@ -12,8 +12,10 @@
     <input type="file" name="fileIssues" class="form-control" id="fileIssues" required>
   </div>
   <button type="submit" class="btn btn-default">Upload issues csv</button>
+  <a href="/data/MOCK_ISSUES.csv" download="ISSUES.CSV" class="btn btn-info">Download mock data</a>
   <br>
-  <div class="formError">{{spread.uploadError}}</div>
+  <div class="formError" ng-if="spread.uploadError">{{spread.uploadError}}</div>
+  <div class="formSuccess" ng-if="spread.uploadSuccess">{{spread.uploadSuccess}}</div>
 </form>
 <table ng-table-dynamic="spread.tableParams with spread.cols" class="table table-condensed table-bordered table-striped">
   <tr ng-repeat="row in $data">
