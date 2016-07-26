@@ -18,9 +18,9 @@ export class MetricsController {
       try {
         self.corporateData.uploadIssuesCsv(file.name, data);
         self.uploadSuccessIssues='The file '+file.name+' was uploaded successfully.';
+        self.issuesDataSets=self.corporateData.getIssuesKeys();
         //Update the scope to show the succes message
         self.$scope.$digest();
-        self.issuesDataSets=self.corporateData.getIssuesKeys();
       }catch(err) {
         alert(err);
         self.uploadErrorIssues=err;
@@ -45,7 +45,6 @@ export class MetricsController {
         this.$scope.dataIssues=[this.$scope.dataIssues];
       });
     });
-    this.issuesDataSets=this.corporateData.getIssuesKeys();
   }
   addSells(){
     this.uploadErrorSells=false;
@@ -58,9 +57,9 @@ export class MetricsController {
       try {
         self.corporateData.uploadSellsCsv(file.name, data);
         self.uploadSuccessSells='The file '+file.name+' was uploaded successfully.';
+        self.sellsDataSets=self.corporateData.getSellsKeys();
         //Update the scope to show the succes message
         self.$scope.$digest();
-        self.sellsDataSets=self.corporateData.getSellsKeys();
       }catch(err) {
         alert(err);
         self.uploadErrorSells=err;
@@ -84,7 +83,6 @@ export class MetricsController {
         this.$scope.dataSells=[this.$scope.dataSells];
       });
     });
-    this.sellsDataSets=this.corporateData.getSellsKeys();
   }
 }
 

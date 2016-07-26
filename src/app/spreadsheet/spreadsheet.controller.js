@@ -17,9 +17,9 @@ export class SpreadsheetController {
       try {
         self.corporateData.uploadIssuesCsv(file.name, data);
         self.uploadSuccess='The file '+file.name+' was uploaded successfully.';
+        self.issuesDataSets=self.corporateData.getIssuesKeys();
         //Update the scope to show the succes message
         self.$scope.$digest();
-        self.issuesDataSets=self.corporateData.getIssuesKeys();
       }catch(err) {
         self.uploadError=err;
         //Update the scope to show the error message

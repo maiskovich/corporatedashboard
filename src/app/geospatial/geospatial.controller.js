@@ -18,9 +18,9 @@ export class GeospatialController {
       try{
         self.corporateData.uploadEmployeesCsv(file.name,data);
         self.uploadSuccess='The file '+file.name+' was uploaded successfully.';
+        self.employeesDataSets=self.corporateData.getEmployeesKeys();
         //Update the scope to show the succes message
         self.$scope.$digest();
-        self.employeesDataSets=self.corporateData.getEmployeesKeys();
       }catch(err) {
         self.uploadError=err;
         //Update the scope to show the error message
