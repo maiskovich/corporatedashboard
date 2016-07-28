@@ -5,6 +5,8 @@ export class SpreadsheetController {
     this.NgTableParams=NgTableParams;
     this.$scope=$scope;
     this.issuesDataSets=this.corporateData.getIssuesKeys();
+    this.dataIssuesSelected="MOCK_ISSUES.csv";
+    this.selectedIssuesDatasetChanged();
   }
   addIssues(){
     this.uploadError=false;

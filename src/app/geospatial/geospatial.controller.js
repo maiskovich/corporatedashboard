@@ -6,6 +6,8 @@ export class GeospatialController {
     this.leafletData=leafletData;
     this.markers = L.markerClusterGroup();
     this.$scope=$scope;
+    this.dataSelected="MOCK_EMPLOYEES.csv";
+    this.selectedDatasetChanged();
   }
   add(){
     this.uploadError=false;

@@ -17,7 +17,7 @@
   <div class="formError" ng-if="spread.uploadError">{{spread.uploadError}}</div>
   <div class="formSuccess" ng-if="spread.uploadSuccess">{{spread.uploadSuccess}}</div>
 </form>
-<table ng-table-dynamic="spread.tableParams with spread.cols" class="table table-condensed table-bordered table-striped">
+<table ng-table-dynamic="spread.tableParams with spread.cols" class="table table-condensed table-bordered table-striped table-responsive">
   <tr ng-repeat="row in $data">
     <td ng-repeat="col in $columns">{{row[col.field]}}</td>
   </tr>

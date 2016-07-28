@@ -79,7 +79,7 @@ export class CorporateDataService {
       && parsedData.indexOf('status')!=-1
       && parsedData.indexOf('closeddate')!=-1
       && parsedData.indexOf('employeename')!=-1){
-      self.localStorageService.set('issues.'+fileName, data);
+      self.localStorageService.set('issues.'+fileName, Papa.parse(data,{header: true,skipEmptyLines: true}));
     }
     //If some of the fields doesnt exist, throw error, giving feedback of which fields are required in the file
     else{
@@ -120,7 +120,7 @@ export class CorporateDataService {
         });
     }else{
       return this.$timeout(function(){
-        return Papa.parse(self.localStorageService.get(key),{header: true,skipEmptyLines: true});
+        return self.localStorageService.get(key);
       },500);
     }
   }
@@ -142,7 +142,7 @@ export class CorporateDataService {
     }else
     //If all of the fields exists
     if(parsedData.indexOf('selldate')!=-1 && parsedData.indexOf('amount')!=-1) {
-      self.localStorageService.set('sells.'+fileName, data);
+      self.localStorageService.set('sells.'+fileName, Papa.parse(data,{header: true,skipEmptyLines: true}));
     }
     //If some of the fields doesnt exist, throw error, giving feedback of which fields are required in the file
     else{
@@ -168,7 +168,7 @@ export class CorporateDataService {
         });
     }else{
       return this.$timeout(function(){
-        return Papa.parse(self.localStorageService.get(key),{header: true,skipEmptyLines: true});
+        return self.localStorageService.get(key);
       },500);
     }
   }

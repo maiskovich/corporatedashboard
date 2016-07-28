@@ -6,6 +6,10 @@ export class MetricsController {
     this.$scope=$scope;
     this.issuesDataSets=corporateData.getIssuesKeys();
     this.sellsDataSets=corporateData.getSellsKeys();
+    this.dataIssuesSelected="MOCK_ISSUES.csv";
+    this.selectedIssuesDatasetChanged();
+    this.dataSellsSelected="MOCK_SELLS.csv";
+    this.selectedSellsDatasetChanged();
   }
   addIssues(){
     this.uploadErrorIssues=false;
