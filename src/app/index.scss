@@ -45,6 +45,13 @@ $icon-font-path: "../../bower_components/bootstrap-sass/assets/fonts/bootstrap/"
   margin-top:10px;
 
 }
+.openIssues{
+  width:30%;
+}
+.chartMetrics{
+  width:100%;
+  height:30vh;
+}
 @media only screen and (max-width: 800px){
 .ng-table-responsive td:before {
  padding:0px !important;
