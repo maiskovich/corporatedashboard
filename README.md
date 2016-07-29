@@ -20,6 +20,8 @@ and a spreadsheet using [ngTable](http://ng-table.com/).
 
 Mock data is provided for using the demo and as an example of the fields name required in the CSV files.
 
+When mock data is selected, the web app make a polling and slicing of the data to simulate live updates.
+
 
 ## Install
 
